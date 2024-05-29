@@ -3,8 +3,6 @@ package com.example.mywebbrowser
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 
 fun Context.sendSMS(number: String, text: String = ""): Boolean {
     return try {
