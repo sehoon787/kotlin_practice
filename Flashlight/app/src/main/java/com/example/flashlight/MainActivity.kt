@@ -1,5 +1,6 @@
 package com.example.flashlight
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,21 +13,32 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private fun switch(state: Boolean){
+        startService(Intent(this, TorchService::class.java).apply {
+            action = if(state) {
+                "on"
+            } else {
+                "off"
+            }
+            binding.flashSwitch.text = "플래시 ${action?.replaceFirstChar(Char::uppercase)}"
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val torch = Torch(this)
+//        val torch = Torch(this)
 
         binding.flashSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.flashSwitch.text = "플래시 On"
-                torch.flashOn()
-            }
-            else{
-                binding.flashSwitch.text = "플래시 Off"
-                torch.flashOff()
-            }
+            switch(isChecked)
+
+//            if(isChecked){
+//                torch.flashOn()
+//            }
+//            else{
+//                torch.flashOff()
+//            }
         }
     }
 }
