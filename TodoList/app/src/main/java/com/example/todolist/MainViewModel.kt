@@ -1,7 +1,6 @@
 package com.example.todolist
 
 import android.app.Application
-import android.icu.util.Calendar
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
@@ -10,6 +9,8 @@ import com.example.todolist.data.TodoDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.Calendar
+
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val db = Room.databaseBuilder(
@@ -19,6 +20,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _items = MutableStateFlow<List<Todo>>(emptyList())
     val items: StateFlow<List<Todo>> = _items
+
+    var selectedTodo: Todo? = null
 
     init {
         viewModelScope.launch {
