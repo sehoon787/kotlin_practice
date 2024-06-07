@@ -29,10 +29,8 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
@@ -44,6 +42,8 @@ class FirstFragment : Fragment() {
             viewModel.selectedTodo = todo
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+        // Bind room db data to recyclerView adapter
+        binding.recyclerView.adapter = todoListAdapter
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){

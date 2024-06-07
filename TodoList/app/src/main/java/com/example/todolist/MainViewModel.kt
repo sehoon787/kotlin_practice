@@ -31,24 +31,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun addTodo(text: String){
+    fun addTodo(text: String, date: Long){
         viewModelScope.launch {
-            db.todoDao().insert(Todo(title = text))
+            db.todoDao().insert(Todo(title = text, date = date))
         }
     }
 
-    fun updateTodo(id: Long, text: String){
-        _items.value
-            .find { todo -> todo.id == id }
-            ?.let { todo ->
-                todo.apply {
-                    title = text
-                    date = Calendar.getInstance().timeInMillis
-                }
-                viewModelScope.launch {
-                    db.todoDao().update(todo)
-                }
+    fun updateTodo(text: String, date: Long) {
+        selectedTodo?.let { todo ->
+            todo.apply {
+                this.title = text
+                this.date = date
             }
+
+            viewModelScope.launch {
+                db.todoDao().update(todo)
+            }
+            selectedTodo = null
+        }
     }
 
     fun deleteTodo(id: Long){
@@ -56,7 +56,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             .find { todo -> todo.id == id }
             ?.let { todo ->
                 viewModelScope.launch {
-                    db.todoDao().update(todo)
+                    db.todoDao().delete(todo)
                 }
             }
     }

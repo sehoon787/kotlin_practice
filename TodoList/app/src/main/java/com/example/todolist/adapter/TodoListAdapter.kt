@@ -16,7 +16,6 @@ class TodoListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         binding = ItemTodoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
         return TodoViewHolder(binding, onClick)
     }
 
