@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">forest</string>
+    <string name="title_home">홈</string>
+    <string name="title_last_schedule">지난 일정</string>
+    <string name="title_register">일정 등록</string>
+    <string name="title_analysis">데이터 분석</string>
+    <string name="title_profile">내 정보</string>
+
+    <string name="camera">카메라</string>
+    <string name="gallery">갤러리</string>
+
+    <string name="disabled">-</string>
+</resources>

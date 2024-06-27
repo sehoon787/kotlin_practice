@@ -1,8 +1,6 @@
 package com.example.mywebbrowser
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences.Editor
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

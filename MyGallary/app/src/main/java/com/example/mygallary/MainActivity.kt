@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         timer(period = 1000){
             runOnUiThread {
                 if(binding.viewPager.currentItem < adapter.itemCount - 1){
-                    binding.viewPager.currentItem = binding.viewPager.currentItem + 1
+                    binding.viewPager.currentItem += 1
                 } else{
                     binding.viewPager.currentItem = 0
                 }
