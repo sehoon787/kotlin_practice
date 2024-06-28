@@ -64,7 +64,6 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         profileViewModel.user.observe(viewLifecycleOwner) {
             binding.tvNameText.text = it.name
             binding.tvDeptPositionText.text = "${it.department}/${it.position}"
@@ -72,7 +71,6 @@ class ProfileFragment : Fragment() {
             binding.tvEmailText.text = it.email
             Glide.with(this).load(it.imageUrl).into(binding.ivProfile)
         }
-
 
         binding.ibEditProfile.setOnClickListener {
             showBottomSheetDialog()

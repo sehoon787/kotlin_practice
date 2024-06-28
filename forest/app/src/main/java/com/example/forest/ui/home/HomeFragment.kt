@@ -12,9 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
+import com.bumptech.glide.Glide
 import com.example.forest.R
-import com.example.forest.data.models.scheduleSample1
-import com.example.forest.data.models.scheduleSample2
+import com.example.forest.data.models.schedulesSample1
+import com.example.forest.data.models.schedulesSample2
 import com.example.forest.databinding.FragmentHomeBinding
 import com.example.forest.ui.adapter.CalendarAdapter
 import com.example.forest.ui.adapter.ReminderAdapter
@@ -50,12 +51,6 @@ class HomeFragment : Fragment() {
      */
     private lateinit var reminderAdapter: ReminderAdapter
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private var schedules = arrayListOf(
-        ScheduleModel(scheduleSample1),
-        ScheduleModel(scheduleSample2),
-        ScheduleModel(scheduleSample1))
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +64,9 @@ class HomeFragment : Fragment() {
     ): View {
         val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
+        homeViewModel.updateSchedule(schedulesSample1)
+        homeViewModel.updateReminderSchedule(schedulesSample2)
+
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -76,11 +74,15 @@ class HomeFragment : Fragment() {
         setUpCalendarClickListener()
         setUpCalendar()
 
-        setUpScheduleAdapter()
-        setUpScheduleClickListener()
+        homeViewModel.homeSchedules.observe(viewLifecycleOwner) {
+            setUpScheduleAdapter(it)
+            setUpScheduleClickListener()
+        }
 
-        setUpReminderAdapter()
-        setUpReminderClickListener()
+        homeViewModel.homeReminderSchedules.observe(viewLifecycleOwner) {
+            setUpReminderAdapter(it)
+            setUpReminderClickListener()
+        }
 
         return root
     }
@@ -141,7 +143,7 @@ class HomeFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setUpScheduleAdapter() {
+    private fun setUpScheduleAdapter(schedules: List<ScheduleModel>) {
         scheduleAdapter = ScheduleAdapter(schedules)
         binding.rvSchedule.adapter = scheduleAdapter
         val scheduleLinearLayoutManager = object : LinearLayoutManager(context) {
@@ -151,7 +153,7 @@ class HomeFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun setUpReminderAdapter() {
+    private fun setUpReminderAdapter(schedules: List<ScheduleModel>) {
         reminderAdapter = ReminderAdapter(schedules)
         binding.rvReminder.adapter = reminderAdapter
         val reminderLinearLayoutManager = object : LinearLayoutManager(context) {

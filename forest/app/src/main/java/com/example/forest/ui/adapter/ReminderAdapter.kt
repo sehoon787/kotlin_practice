@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.forest.R
 import com.example.forest.ui.models.ScheduleModel
 
-class ReminderAdapter(private val items: ArrayList<ScheduleModel>) :
+class ReminderAdapter(private val items: List<ScheduleModel>) :
     RecyclerView.Adapter<ReminderAdapter.ViewHolder>() {
     private val list = ArrayList<ScheduleModel>()
 
@@ -54,7 +54,7 @@ class ReminderAdapter(private val items: ArrayList<ScheduleModel>) :
         return items.count()
     }
 
-    fun setData(scheduleList: ArrayList<ScheduleModel>) {
+    fun setData(scheduleList: List<ScheduleModel>) {
         list.clear()
         list.addAll(scheduleList)
         notifyDataSetChanged()

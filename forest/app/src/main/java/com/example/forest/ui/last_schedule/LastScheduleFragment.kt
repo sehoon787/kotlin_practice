@@ -1,13 +1,23 @@
 package com.example.forest.ui.last_schedule
 
+import CategoryChipsAdapter
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.forest.data.models.schedulesSample1
+import com.example.forest.data.models.schedulesSample3
 import com.example.forest.databinding.FragmentLastScheduleBinding
+import com.example.forest.ui.adapter.ScheduleAdapter
+import com.example.forest.ui.models.CategoryChipModel
+import com.example.forest.ui.models.ScheduleModel
 
 class LastScheduleFragment : Fragment() {
 
@@ -15,6 +25,13 @@ class LastScheduleFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    /**
+     * Adapter LastSchedule
+     */
+    private lateinit var scheduleAdapter: ScheduleAdapter
+    private lateinit var categoryAdapter: CategoryChipsAdapter
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,18 +39,63 @@ class LastScheduleFragment : Fragment() {
     ): View {
         val lastScheduleViewModel = ViewModelProvider(this)[LastScheduleViewModel::class.java]
 
+        lastScheduleViewModel.updateLastSchedule(schedulesSample3)
+
         _binding = FragmentLastScheduleBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        lastScheduleViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        lastScheduleViewModel.lastSchedulesSchedules.observe(viewLifecycleOwner) {
+            setUpLastScheduleAdapter(it)
+            setUpLastScheduleClickListener()
         }
+
+        setUpCategoryChipsAdapter()
+        
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    /**
+     * Set up click listener
+     */
+    private fun setUpLastScheduleClickListener() {
+        scheduleAdapter.setItemClickListener(object: ScheduleAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                Toast.makeText(context, "ScheduleAdapter: hello! I'm callback", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    /**
+     * Setting up adapter for recyclerview
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUpLastScheduleAdapter(schedules: List<ScheduleModel>) {
+        scheduleAdapter = ScheduleAdapter(schedules)
+        binding.rvLastSchedule.adapter = scheduleAdapter
+        val scheduleLinearLayoutManager = object : LinearLayoutManager(context) {
+            override fun canScrollVertically(): Boolean { return false }
+        }
+        binding.rvLastSchedule.layoutManager = scheduleLinearLayoutManager
+    }
+
+    private fun setUpCategoryChipsAdapter() {
+        categoryAdapter = CategoryChipsAdapter(listOf(
+            CategoryChipModel("Northern Europe", true),
+            CategoryChipModel("Western Europe", true),
+            CategoryChipModel("Southern Europe", true),
+            CategoryChipModel("Southeast Europe", true),
+            CategoryChipModel("Central Europe", true),
+            CategoryChipModel("Eastern Europe", false)
+        ))
+        binding.rvLastSchedule.adapter = categoryAdapter
+        val scheduleLinearLayoutManager = object : LinearLayoutManager(context) {
+            override fun canScrollVertically(): Boolean { return false }
+        }
+        binding.rvLastSchedule.layoutManager = scheduleLinearLayoutManager
     }
 }

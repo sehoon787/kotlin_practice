@@ -2,10 +2,18 @@ package com.example.forest.data.models
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.forest.ui.models.ScheduleModel
 import java.io.Serializable
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
+data class Schedules(
+    val schedule: ArrayList<Schedule>,
+    val totalSize: Int? = null,
+    val totalPages: Int? = null,
+    val page: Int? = null,
+    val pageSize: Int? = null,
+) : Serializable
 
 data class Schedule(
     val code: String,
@@ -58,4 +66,51 @@ val scheduleSample2 = Schedule(
     endDate = LocalDateTime.parse("2024-04-26 14:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
     companion = arrayListOf(userSample),
     warning = "SAFE"
+)
+
+@RequiresApi(Build.VERSION_CODES.O)
+val scheduleSample3 = Schedule(
+    code = "100003",
+    name = "귀가",
+    location = Location(code = "0001", name = "뚝섬로 48651번지 1583호"),
+    startDate = LocalDateTime.parse("2024-03-26 12:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+    endDate = LocalDateTime.parse("2024-03-26 14:30", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+    companion = arrayListOf(userSample),
+    warning = "ALERT"
+)
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+val schedulesSample1 = Schedules(
+    schedule = arrayListOf(
+        scheduleSample1,
+        scheduleSample2,
+        scheduleSample2,
+        scheduleSample1
+    ),
+    pageSize = 4,
+    totalSize = 1,
+    page = 1
+)
+
+@RequiresApi(Build.VERSION_CODES.O)
+val schedulesSample2 = Schedules(
+    schedule = arrayListOf(
+        scheduleSample1,
+        scheduleSample2,
+    ),
+    pageSize = 2,
+    totalSize = 1,
+    page = 1
+)
+
+@RequiresApi(Build.VERSION_CODES.O)
+val schedulesSample3 = Schedules(
+    schedule = arrayListOf(
+        scheduleSample1,
+        scheduleSample3,
+    ),
+    pageSize = 2,
+    totalSize = 1,
+    page = 1
 )

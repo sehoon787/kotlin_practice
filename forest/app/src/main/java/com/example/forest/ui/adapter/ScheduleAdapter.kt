@@ -1,5 +1,6 @@
 package com.example.forest.ui.adapter
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
@@ -8,22 +9,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.forest.R
 import com.example.forest.ui.models.ScheduleModel
 
-class ScheduleAdapter(private val items: ArrayList<ScheduleModel>) :
+class ScheduleAdapter(private val items: List<ScheduleModel>) :
     RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
     private val list = ArrayList<ScheduleModel>()
 
-    val safeColor = "#1547F9"
-    val warnColor = "#C91C1C"
-
-    private fun setContainer(color: String) = GradientDrawable().apply {
+    private fun setContainer(color: Int) = GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE
         cornerRadius = 20f
-        setColor(Color.parseColor(color))
-        setStroke(1, Color.parseColor(color))
+        setColor(color)
+        setStroke(1, color)
     }
 
     interface onItemClickListener {
@@ -38,42 +39,62 @@ class ScheduleAdapter(private val items: ArrayList<ScheduleModel>) :
 
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        fun bindItems(items: ScheduleModel) {
+        fun bindItems(item: ScheduleModel) {
+            val safeColor = ContextCompat.getColor(itemView.context, R.color.safe)
+            val alertColor = ContextCompat.getColor(itemView.context, R.color.alert)
+            val warnColor = ContextCompat.getColor(itemView.context, R.color.warn)
+
             val container = itemView.findViewById<LinearLayout>(R.id.lnrLy_schedule)
-            val stateView = itemView.findViewById<ImageView>(R.id.iv_state)
 
             val nameView = itemView.findViewById<TextView>(R.id.tv_name)
             val locationView = itemView.findViewById<TextView>(R.id.tv_location)
             val startTimeView = itemView.findViewById<TextView>(R.id.tv_start_time)
 
+            val stateView = itemView.findViewById<ImageView>(R.id.iv_state)
             val warningView1 = itemView.findViewById<ImageView>(R.id.iv_warning1)
             val warningView2 = itemView.findViewById<ImageView>(R.id.iv_warning2)
             val warningView3 = itemView.findViewById<ImageView>(R.id.iv_warning3)
+
             val companionView1 = itemView.findViewById<ImageView>(R.id.iv_companion1)
             val companionView2 = itemView.findViewById<ImageView>(R.id.iv_companion2)
             val companionCountView = itemView.findViewById<TextView>(R.id.tv_companion_count)
 
-            nameView.text = items.name
-            locationView.text = items.locationName
+            nameView.text = item.name
+            locationView.text = item.locationName
 
-            if(items.warning==2){
-                container.background = setContainer(warnColor)
-                stateView.setColorFilter(Color.parseColor(warnColor))
-            } else if(items.warning==1){
-                container.background = setContainer(safeColor)
-                stateView.setColorFilter(Color.parseColor(safeColor))
-            } else{
-                container.background = setContainer(safeColor)
-                stateView.setColorFilter(Color.parseColor(safeColor))
+            when (item.warning) {
+                2 -> {
+                    container.background = setContainer(warnColor)
+                    stateView.setColorFilter(warnColor)
+                    warningView3.isVisible = true
+                    warningView2.isVisible = true
+                    warningView1.isVisible = true
+                }
+                1 -> {
+                    container.background = setContainer(alertColor)
+                    stateView.setColorFilter(alertColor)
+                    warningView3.isVisible = false
+                    warningView2.isVisible = true
+                    warningView1.isVisible = true
+                }
+                0 -> {
+                    container.background = setContainer(safeColor)
+                    stateView.setColorFilter(safeColor)
+                    warningView3.isVisible = false
+                    warningView2.isVisible = false
+                    warningView1.isVisible = true
+                }
+                else -> {
+                    container.background = setContainer(safeColor)
+                    stateView.setColorFilter(safeColor)
+                    warningView3.isVisible = false
+                    warningView2.isVisible = false
+                    warningView1.setColorFilter(safeColor)
+                }
             }
 
-//            startTimeView.text = items.startTime
-
-//            if(2<items.warning){ warningView3.setImageResource(items.companionImages) }
-//            if(1<items.warning){ warningView2.setImageResource(items.companionImages) }
-//            if(0<items.warning){ warningView1.setImageResource(items.companionImages) }
-//            stateView.setImageResource(items.companionImages) // -> current time과 start time 비교
-//            companionView.setImageResource(items.companionImages)
+//            startTimeView.text = item.startTime
+//            companionView.setImageResource(item.companionImages)
         }
     }
 
@@ -96,7 +117,7 @@ class ScheduleAdapter(private val items: ArrayList<ScheduleModel>) :
         return items.count()
     }
 
-    fun setData(scheduleList: ArrayList<ScheduleModel>) {
+    fun setData(scheduleList: List<ScheduleModel>) {
         list.clear()
         list.addAll(scheduleList)
         notifyDataSetChanged()

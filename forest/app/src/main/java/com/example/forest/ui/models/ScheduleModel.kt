@@ -5,6 +5,8 @@ import com.example.forest.data.models.Schedule
 import com.example.forest.data.models.User
 import java.util.Locale
 
+/**
+ * Used for Recycler View and Adapter */
 data class ScheduleModel(
     private val schedule: Schedule,
 ){
@@ -20,12 +22,13 @@ data class ScheduleModel(
     val endTime: String
         get() = SimpleDateFormat("HH:mm", Locale.getDefault()).format(schedule.endDate)
 
-    val warning: Int
+    val warning: Int?
         get() {
             return when (schedule.warning) {
                 "WARN" -> 2
-                "Alert" -> 1
-                else -> 0
+                "ALERT" -> 1
+                "SAFE" -> 0
+                else -> null
             }
         }
 

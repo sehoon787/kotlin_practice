@@ -1,11 +1,15 @@
 package com.example.forest.ui.adapter
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.databinding.adapters.ViewBindingAdapter.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.example.forest.R
 import com.example.forest.ui.models.CalendarDateModel
@@ -19,6 +23,7 @@ class CalendarAdapter(private val listener: (calendarDateModel: CalendarDateMode
             val calendarDay = itemView.findViewById<TextView>(R.id.tv_calendar_day)
             val calendarDate = itemView.findViewById<TextView>(R.id.tv_calendar_date)
             val cardView = itemView.findViewById<CardView>(R.id.card_calendar)
+            val calendarSelected = itemView.findViewById<ImageView>(R.id.iv_calendar_selected)
 
             if (calendarDateModel.isSelected) {
                 calendarDay.setTextColor(
@@ -39,6 +44,7 @@ class CalendarAdapter(private val listener: (calendarDateModel: CalendarDateMode
                         R.color.purple_200
                     )
                 )
+                calendarSelected.setColorFilter(Color.parseColor("#40979797"))
             } else {
                 calendarDay.setTextColor(
                     ContextCompat.getColor(
@@ -58,6 +64,7 @@ class CalendarAdapter(private val listener: (calendarDateModel: CalendarDateMode
                         R.color.white
                     )
                 )
+                calendarSelected.colorFilter = null
             }
 
             calendarDay.text = calendarDateModel.calendarDay

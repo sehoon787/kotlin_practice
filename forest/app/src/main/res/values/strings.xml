@@ -9,5 +9,7 @@
     <string name="camera">카메라</string>
     <string name="gallery">갤러리</string>
 
+    <string name="delete">삭제</string>
+
     <string name="disabled">-</string>
 </resources>
