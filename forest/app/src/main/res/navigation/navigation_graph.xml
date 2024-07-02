@@ -9,13 +9,36 @@
         android:id="@+id/navigation_home"
         android:name="com.example.forest.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+<!--        <action-->
+<!--            android:id="@+id/action_HomeFragment_to_navigationFragment"-->
+<!--            app:destination="@id/navigation_fragment" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_home_fragment_to_detailFragment"-->
+<!--            app:destination="@id/detail_fragment" />-->
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_last_schedule"
         android:name="com.example.forest.ui.last_schedule.LastScheduleFragment"
         android:label="@string/title_last_schedule"
-        tools:layout="@layout/fragment_last_schedule" />
+        tools:layout="@layout/fragment_last_schedule">
+<!--        <action-->
+<!--            android:id="@+id/action_lastScheduleFragment_to_detailFragment"-->
+<!--            app:destination="@id/detailFragment" />-->
+        <action
+            android:id="@+id/action_lastScheduleFragment_to_categoryFilterFragment"
+            app:destination="@id/CategoryFilterBottomSheet" />
+    </fragment>
+    <dialog
+        android:id="@+id/filterBottomSheet"
+        android:name="com.example.forest.ui.common.CategoryFilterBottomSheet"
+        tools:layout="@layout/bottom_sheet_filter" >
+        <argument
+            android:name="filter_data"
+            app:argType="com.example.restcountries.ui.filter.FilterData"
+            app:nullable="true" />
+    </dialog>
 
     <fragment
         android:id="@+id/navigation_register"
